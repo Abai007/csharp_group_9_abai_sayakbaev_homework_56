@@ -15,6 +15,7 @@ namespace homework_56.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
+                    CreatorName = table.Column<string>(type: "text", nullable: true),
                     Priority = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<string>(type: "text", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),

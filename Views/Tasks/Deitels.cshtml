@@ -1,0 +1,63 @@
+﻿@model homework_56.Models.Task
+@{ ViewBag.Title = "Категории";
+                Layout = "_Layout";}
+<h2>Категории</h2>
+<a asp-action="Create" asp-controller="Tasks">Добавить задачи</a>
+<div class="table_section">
+<table style="width: 100%;">
+    <tr>
+        <th>Id</th>
+        <th>Название</th>
+        <th>Приоритет</th>
+        <th>Статус</th>
+        <th>Описание</th>
+        @if (Model.Status == "Открыта")
+        {
+            <th>Дата открытия</th>
+        }else if(Model.Status == "Закрыто")
+        {
+            <th>Дата закрытия</th>
+        }
+    </tr>
+    <tr>
+        <td>@Model.id</td>
+        <td>@Model.Name</td>
+        <td>@Model.Priority</td>
+        <td>@Model.Status</td>
+        <td>@Model.Description</td>
+        @switch (Model.Status)
+        {
+            case "Открыта":
+                <td>@Model.OpenDate</td>
+                break;
+            case "Закрыто":
+                <td>@Model.ComplateDate</td>
+                break;
+        }
+        @switch (Model.Status)
+        {
+            case "Новая":
+    <td>
+        @using (Html.BeginForm("Open", "Tasks", new { id = Model.id }))
+        {<button type="submit">Открыть</button>}
+    </td>
+                        <td>
+                            @using (Html.BeginForm("Delete", "Tasks", new { id = Model.id }))
+                            {<button type="submit">Удалить</button>}
+                        </td> break;
+                                        case "Открыта":
+                                            <td>
+                                                @using (Html.BeginForm("Close", "Tasks", new { id = Model.id }))
+                                                {<button type="submit">Закрыть</button>}
+                                            </td>
+                                            break;
+                                        case "Закрыто":
+                                            <td>
+                                                @using (Html.BeginForm("Delete", "Tasks", new { id = Model.id }))
+                                                {<button type="submit">Удалить</button>}
+                                            </td>
+                                            break;
+                                    }
+    </tr>}
+</table>
+</div>

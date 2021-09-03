@@ -10,7 +10,7 @@ using homework_56.Models;
 namespace homework_56.Migrations
 {
     [DbContext(typeof(ToDoContext))]
-    [Migration("20210903165345_initial")]
+    [Migration("20210903181252_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,9 @@ namespace homework_56.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatorName")
+                        .HasColumnType("text");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
