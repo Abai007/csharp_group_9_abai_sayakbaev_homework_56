@@ -13,10 +13,18 @@
 <table style="width: 100%;">
     <tr>
         <th>Id</th>
-        <th>Название</th>
-        <th>Приоритет</th>
-        <th>Статус</th>
-        <th>Дата создания</th>
+        <th>
+            <a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">Название</a>
+        </th>
+        <th>
+            <a asp-action="Index" asp-route-sortOrder="@ViewBag.PrioritySort">Приоритет</a>
+        </th>
+        <th>
+            <a asp-action="Index" asp-route-sortOrder="@ViewBag.StatusSort">Статус</a>
+        </th>
+        <th>
+            <a asp-action="Index" asp-route-sortOrder="@ViewBag.CreateDateSort">Дата создания</a>
+        </th>
         <th>Действия</th>
     </tr>
     @foreach (var task in @Model)
