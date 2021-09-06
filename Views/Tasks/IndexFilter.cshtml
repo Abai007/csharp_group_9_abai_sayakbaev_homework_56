@@ -1,0 +1,111 @@
+﻿@using System.Threading.Tasks;
+@using homework_56.Models;
+
+@model homework_56.ViewModel.TasksListViewModel
+@{
+    ViewBag.Title = "Каталог пользователей";
+}
+
+<h2>Каталог пользователей</h2>
+@{
+    ViewBag.Status = new SelectList(new string[] { "Высокий", "Средний", "Низкий" }, "Id", "Name");
+    ViewBag.Priority = new SelectList(new string[] { "Новая", "Открыта", "Закрыто" }, "Id", "Name");
+}
+<div class="row">
+    <div class="phone_add_form col-md-6">
+        <form asp-action="IndexFilter">
+            <div class="form_row">
+                <label for="">
+                    Наименование
+                    <input asp-for="Name" type="text">
+                </label>
+            </div>
+            <div class="form_row">
+                <label for="">
+                    Описание
+                    <input asp-for="Description" type="text">
+                </label>
+            </div>
+            <div class="form_row">
+                <label for="">
+                    Дата от
+                    <input asp-for="FromDate" type="date" >
+                </label>
+            </div>
+            <div class="form_row">
+                <label for="">
+                    Дата до
+                    <input asp-for="ToDate" type="date" >
+                </label>
+            </div>
+            <div>
+                <label for="">
+                    @Html.DropDownList("Status", new SelectList(new string[] { "Новая", "Открыта", "Закрыто" }), "")
+                </label>
+            </div>
+            <div>
+                <label for="">
+                    @Html.DropDownList("Priority", new SelectList(new string[] { "Высокий", "Средний", "Низкий" }), "")
+                </label>
+            </div>
+            <button type="submit">Filter</button>
+        </form>
+        @section Scripts
+        {
+            @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+        }
+    </div>
+
+</div>
+<table class="table table-striped">
+
+    <tr>
+
+        <th>Заголовок </th>
+        <th>Описание</th>
+        <th>Дата создания</th>
+        <th>Приоритет</th>
+        <th>Состояние </th>
+
+    </tr>
+
+
+
+    @foreach (var item in Model.Tasks)
+
+    {
+
+        <tr>
+
+            <td>
+
+                @Html.DisplayFor(modelItem => item.Name)
+
+            </td>
+
+            <td>
+
+                @Html.DisplayFor(modelItem => item.Description)
+
+            </td>
+
+            <td>
+
+                @Html.DisplayFor(modelItem => item.CreateDate)
+
+            </td>
+            <td>
+
+                @Html.DisplayFor(modelItem => item.Priority)
+
+            </td>
+            <td>
+
+                @Html.DisplayFor(modelItem => item.Status)
+
+            </td>
+
+        </tr>
+    }
+
+</table>

@@ -1,6 +1,8 @@
 ﻿using homework_56.Enum;
 using homework_56.Models;
+using homework_56.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,6 +14,7 @@ namespace homework_56.Controllers
     public class TasksController : Controller
     {
         private ToDoContext _db;
+        private object historyCollection;
 
         public TasksController(ToDoContext db)
         {
@@ -19,7 +22,7 @@ namespace homework_56.Controllers
         }
         public async Task<IActionResult> Index(SortState sortOrder = SortState.NameAsc)
         {
-            IQueryable<Models.Task> productsB = _db.Tasks;
+            IQueryable<Models.TaskToDo> productsB = _db.Tasks;
             ViewBag.NameSort = sortOrder == SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
             ViewBag.PrioritySort = sortOrder == SortState.PriorityKeyAsc ? SortState.PriorityKeyDesc : SortState.PriorityKeyAsc;
             ViewBag.StatusSort = sortOrder == SortState.StatusKeyAsc ? SortState.StatusKeyDesc : SortState.StatusKeyAsc;
@@ -78,9 +81,9 @@ namespace homework_56.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Models.Task task)
+        public IActionResult Create(Models.TaskToDo task)
         {
-            task.CreateDate = DateTime.Now;
+            task.CreateDate = DateTime.Now.Date;
             task.Status = "Новая";
             task.StatusKey = 1;
             if (task.Priority == "Высокий")
@@ -112,7 +115,7 @@ namespace homework_56.Controllers
         public IActionResult Open(int Id)
         {
             var task = _db.Tasks.FirstOrDefault(t => t.id == Id);
-            task.OpenDate = DateTime.Now;
+            task.OpenDate = DateTime.Now.Date;
             task.Status = "Открыта";
             task.StatusKey = 2;
             _db.Tasks.Update(task);
@@ -123,12 +126,46 @@ namespace homework_56.Controllers
         public IActionResult Close(int Id)
         {
             var task = _db.Tasks.FirstOrDefault(t => t.id == Id);
-            task.ComplateDate = DateTime.Now;
+            task.ComplateDate = DateTime.Now.Date;
             task.Status = "Закрыто";
             task.StatusKey = 3;
             _db.Tasks.Update(task);
             _db.SaveChanges();
             return RedirectToAction("Index");
+        }
+        public IActionResult IndexFilter(TasksListViewModel viewModelList)
+
+        {
+
+            IQueryable<TaskToDo> tasks = _db.Tasks;
+
+            if (!string.IsNullOrEmpty(viewModelList.Name))
+            {
+                tasks = tasks.Where(p => p.Name.Contains(viewModelList.Name));
+            }
+            if (!string.IsNullOrEmpty(viewModelList.Description))
+            {
+                tasks = tasks.Where(p => p.Description.Contains(viewModelList.Description));
+            }
+            if (viewModelList.FromDate != null && viewModelList.ToDate != null)
+            {
+                tasks = (from task in _db.Tasks
+                              where (task.CreateDate <= viewModelList.ToDate && task.CreateDate >= viewModelList.FromDate)
+                              select task);
+            }
+            if (viewModelList.Status != null)
+            {
+                tasks = _db.Tasks.Where(p => p.Status == viewModelList.Status.ToString());
+            }
+            if (viewModelList.Priority != null)
+            {
+                tasks = _db.Tasks.Where(p => p.Priority == viewModelList.Priority.ToString());
+            }
+            TasksListViewModel viewModel = new TasksListViewModel
+            {
+                Tasks = tasks.ToList()
+            };
+            return View(viewModel);
         }
     }
 }

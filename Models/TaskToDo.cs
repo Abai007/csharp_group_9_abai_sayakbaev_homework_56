@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace homework_56.Models
 {
-    public class Task
+    public class TaskToDo
     {
         public int id { get; set; }
         public string Name { get; set; }
@@ -14,9 +14,9 @@ namespace homework_56.Models
         public string Priority { get; set; }
         public int StatusKey { get; set; }
         public string Status { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime ComplateDate { get; set; }
-        public DateTime OpenDate { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public DateTime? ComplateDate { get; set; }
+        public DateTime? OpenDate { get; set; }
         public string Description { get; set; }
     }
 }

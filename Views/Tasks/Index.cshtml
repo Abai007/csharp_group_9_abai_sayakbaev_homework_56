@@ -1,4 +1,4 @@
-﻿@model List<homework_56.Models.Task>
+﻿@model List<homework_56.Models.TaskToDo>
 @{ ViewBag.Title = "Категории";
                 Layout = "_Layout"; }
 <h2>Задачи</h2>
@@ -13,6 +13,7 @@
 <table style="width: 100%;">
     <tr>
         <th>Id</th>
+        <th>Имя испонителя</th>
         <th>
             <a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">Название</a>
         </th>
@@ -31,6 +32,7 @@
     {
 <tr>
     <td>@task.id</td>
+    <td>@task.CreatorName</td>
     <td>@task.Name</td>
     <td>@task.Priority</td>
     <td>@task.Status</td>
@@ -38,40 +40,39 @@
     @switch (task.Status)
     {
         case "Новая":
-            <td>
-                @using (Html.BeginForm("Open", "Tasks", new { id = task.id }))
-                {<button type="submit">Открыть</button>}
-            </td>
-            <td>
-                @using (Html.BeginForm("Deitels", "Tasks", new { id = task.id }))
-                {<button type="submit">Детали</button>}
-            </td>
-            <td>
-                @using (Html.BeginForm("Delete", "Tasks", new { id = task.id }))
-                {<button type="submit">Удалить</button>}
-            </td>
-                    break;
-        case "Открыта":
-            <td>
-                @using (Html.BeginForm("Close", "Tasks", new { id = task.id }))
-                {<button type="submit">Закрыть</button>}
-            </td>
-            <td>
-                @using (Html.BeginForm("Deitels", "Tasks", new { id = task.id }))
-                {<button type="submit">Детали</button>}
-            </td>
-                    break;
-        case "Закрыто":
-            <td>
-                @using (Html.BeginForm("Delete", "Tasks", new { id = task.id }))
-                {<button type="submit">Удалить</button>}
-            </td>
-            <td>
-                @using (Html.BeginForm("Deitels", "Tasks", new { id = task.id }))
-                {<button type="submit">Детали</button>}
-            </td>
-                    break;
-    }
+<td>
+    @using (Html.BeginForm("Open", "Tasks", new { id = task.id }))
+    {<button type="submit">Открыть</button>}
+</td>
+                            <td>
+                                @using (Html.BeginForm("Deitels", "Tasks", new { id = task.id }))
+                                {<button type="submit">Детали</button>}
+                            </td>
+                                                        <td>
+                                                            @using (Html.BeginForm("Delete", "Tasks", new { id = task.id }))
+                                                            {<button type="submit">Удалить</button>}
+                                                        </td> break;
+                                                                                case "Открыта":
+                                                                                    <td>
+                                                                                        @using (Html.BeginForm("Close", "Tasks", new { id = task.id }))
+                                                                                        {<button type="submit">Закрыть</button>}
+                                                                                    </td>
+                                                                                                                <td>
+                                                                                                                    @using (Html.BeginForm("Deitels", "Tasks", new { id = task.id }))
+                                                                                                                    {<button type="submit">Детали</button>}
+                                                                                                                </td>
+                                                                                                                break;
+                                                                                                            case "Закрыто":
+                                                                                                                <td>
+                                                                                                                    @using (Html.BeginForm("Delete", "Tasks", new { id = task.id }))
+                                                                                                                    {<button type="submit">Удалить</button>}
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    @using (Html.BeginForm("Deitels", "Tasks", new { id = task.id }))
+                                                                                                                    {<button type="submit">Детали</button>}
+                                                                                                                </td>
+                                                                                                                break;
+                                                                                                        }
 </tr>}
 </table>}
 </div>

@@ -8,7 +8,7 @@ namespace homework_56.Models
 {
     public class ToDoContext : DbContext
     {
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet<TaskToDo> Tasks { get; set; }
         public ToDoContext(DbContextOptions<ToDoContext> options): base(options)
         {
 
