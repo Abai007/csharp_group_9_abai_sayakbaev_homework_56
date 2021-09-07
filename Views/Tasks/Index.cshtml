@@ -1,78 +1,114 @@
-﻿@model List<homework_56.Models.TaskToDo>
+﻿
+
+@*@model PageViewModel
 @{ ViewBag.Title = "Категории";
-                Layout = "_Layout"; }
+    Layout = "_Layout"; }
 <h2>Задачи</h2>
 <a asp-action="Create" asp-controller="Tasks">Добавить задачи</a>
 <div class="table_section">
 
     @if (@Model.Count == 0)
     {
-<p>Задачи еще не добавлены</p> }
-            else
+        <p>Задачи еще не добавлены</p> }
+    else
+    {
+        <table style="width: 100%;">
+            <tr>
+                <th>Id</th>
+                <th>Имя испонителя</th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">Название</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.PrioritySort">Приоритет</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.StatusSort">Статус</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewBag.CreateDateSort">Дата создания</a>
+                </th>
+                <th>Действия</th>
+            </tr>
+            @foreach (var task in @Model)
             {
-<table style="width: 100%;">
-    <tr>
-        <th>Id</th>
-        <th>Имя испонителя</th>
-        <th>
-            <a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">Название</a>
-        </th>
-        <th>
-            <a asp-action="Index" asp-route-sortOrder="@ViewBag.PrioritySort">Приоритет</a>
-        </th>
-        <th>
-            <a asp-action="Index" asp-route-sortOrder="@ViewBag.StatusSort">Статус</a>
-        </th>
-        <th>
-            <a asp-action="Index" asp-route-sortOrder="@ViewBag.CreateDateSort">Дата создания</a>
-        </th>
-        <th>Действия</th>
-    </tr>
-    @foreach (var task in @Model)
-    {
-<tr>
-    <td>@task.id</td>
-    <td>@task.CreatorName</td>
-    <td>@task.Name</td>
-    <td>@task.Priority</td>
-    <td>@task.Status</td>
-    <td>@task.CreateDate</td>
-    @switch (task.Status)
-    {
-        case "Новая":
-<td>
-    @using (Html.BeginForm("Open", "Tasks", new { id = task.id }))
-    {<button type="submit">Открыть</button>}
-</td>
-                            <td>
-                                @using (Html.BeginForm("Deitels", "Tasks", new { id = task.id }))
-                                {<button type="submit">Детали</button>}
-                            </td>
-                                                        <td>
-                                                            @using (Html.BeginForm("Delete", "Tasks", new { id = task.id }))
-                                                            {<button type="submit">Удалить</button>}
-                                                        </td> break;
-                                                                                case "Открыта":
-                                                                                    <td>
-                                                                                        @using (Html.BeginForm("Close", "Tasks", new { id = task.id }))
-                                                                                        {<button type="submit">Закрыть</button>}
-                                                                                    </td>
-                                                                                                                <td>
-                                                                                                                    @using (Html.BeginForm("Deitels", "Tasks", new { id = task.id }))
-                                                                                                                    {<button type="submit">Детали</button>}
-                                                                                                                </td>
-                                                                                                                break;
-                                                                                                            case "Закрыто":
-                                                                                                                <td>
-                                                                                                                    @using (Html.BeginForm("Delete", "Tasks", new { id = task.id }))
-                                                                                                                    {<button type="submit">Удалить</button>}
-                                                                                                                </td>
-                                                                                                                <td>
-                                                                                                                    @using (Html.BeginForm("Deitels", "Tasks", new { id = task.id }))
-                                                                                                                    {<button type="submit">Детали</button>}
-                                                                                                                </td>
-                                                                                                                break;
-                                                                                                        }
-</tr>}
-</table>}
+                <div>
+                    <tr>
+                        <td>@task.id</td>
+                        <td>@task.CreatorName</td>
+                        <td>@task.Name</td>
+                        <td>@task.Priority</td>
+                        <td>@task.Status</td>
+                        <td>@task.CreateDate</td>
+                        @switch (task.Status)
+                        {
+                            case "Новая":
+                                <td>
+                                    @using (Html.BeginForm("Open", "Tasks", new { id = task.id }))
+                                    {<button type="submit">Открыть</button>}
+                                </td>
+                                <td>
+                                    @using (Html.BeginForm("Deitels", "Tasks", new { id = task.id }))
+                                    {<button type="submit">Детали</button>}
+                                </td>
+                                <td>
+                                    @using (Html.BeginForm("Delete", "Tasks", new { id = task.id }))
+                                    {<button type="submit">Удалить</button>}
+                                </td>
+ break;
+                            case "Открыта":
+                                <td>
+                                    @using (Html.BeginForm("Close", "Tasks", new { id = task.id }))
+                                    {<button type="submit">Закрыть</button>}
+                                </td>
+                                <td>
+                                    @using (Html.BeginForm("Deitels", "Tasks", new { id = task.id }))
+                                    {<button type="submit">Детали</button>}
+                                </td>
+                                break;
+                            case "Закрыто":
+                                <td>
+                                    @using (Html.BeginForm("Delete", "Tasks", new { id = task.id }))
+                                    {<button type="submit">Удалить</button>}
+                                </td>
+                                <td>
+                                    @using (Html.BeginForm("Deitels", "Tasks", new { id = task.id }))
+                                    {<button type="submit">Детали</button>}
+                                </td>
+                                break;
+                        }
+                    </tr>
+                </div>
+}
+        </table>}
 </div>
+@if (Model.PageViewModel.HasPreviousPage)
+
+{
+
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       class="btn btn-default btn">
+
+        <i class="glyphicon glyphicon-chevron-left"></i>
+
+        Назад
+
+    </a>}
+
+@if (Model.PageViewModel.HasNextPage)
+
+{
+
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       class="btn btn-default btn">
+
+        Вперед
+
+        <i class="glyphicon glyphicon-chevron-right"></i>
+
+    </a>}*@
+
+
+

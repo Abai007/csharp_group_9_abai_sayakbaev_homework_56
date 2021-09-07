@@ -15,35 +15,27 @@
                 <label for="">
                     Название
                     <input asp-for="Name" type="text">
-                    @*<span asp-validation-for="Name" />*@
                 </label>
             </div>
             <div class="form_row">
                 <label for="">
                     Имя исполнителя
                     <input asp-for="CreatorName" type="text">
-                    @*<span asp-validation-for="Name" />*@
                 </label>
             </div>
             <div class="form_row">
                 <label for="">
                     Приоритет задачи
                     @Html.DropDownList("Priority", new SelectList(new string[] {"Высокий", "Средний", "Низкий" }))
-                    @*<span asp-validation-for="Name" />*@
                 </label>
             </div>
             <div class="form_row">
                 <label for="">
                     Описание задачи
                     <input asp-for="Description" type="text">
-                    @*<span asp-validation-for="Name" />*@
                 </label>
             </div>
             <button type="submit">Создать</button>
         </form>
-        @*@section Scripts
-            {
-                @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-            }*@
     </div>
 </div>

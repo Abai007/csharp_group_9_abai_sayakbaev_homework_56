@@ -1,4 +1,5 @@
-﻿using homework_56.Enum;
+﻿
+using homework_56.Enum;
 using homework_56.Models;
 using homework_56.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -20,8 +21,30 @@ namespace homework_56.Controllers
         {
             _db = db;
         }
-        public async Task<IActionResult> Index(SortState sortOrder = SortState.NameAsc)
+        public async Task<IActionResult> Index(SortState sortOrder = SortState.NameAsc, int page = 1)
         {
+            int pageSize = 10;
+            var source = from p in _db.Tasks
+                         orderby p.CreateDate descending
+                         select p;
+            var count = await source.CountAsync();
+
+            var items = await source.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+
+
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+
+            IndexViewModel viewModel = new IndexViewModel
+
+            {
+
+                PageViewModel = pageViewModel,
+
+                TList = items
+
+            };
+            return View(viewModel);
             IQueryable<Models.TaskToDo> productsB = _db.Tasks;
             ViewBag.NameSort = sortOrder == SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
             ViewBag.PrioritySort = sortOrder == SortState.PriorityKeyAsc ? SortState.PriorityKeyDesc : SortState.PriorityKeyAsc;
@@ -151,6 +174,18 @@ namespace homework_56.Controllers
             {
                 tasks = (from task in _db.Tasks
                               where (task.CreateDate <= viewModelList.ToDate && task.CreateDate >= viewModelList.FromDate)
+                              select task);
+            }
+            if (viewModelList.FromDate != null)
+            {
+                tasks = (from task in _db.Tasks
+                              where (task.CreateDate >= viewModelList.FromDate)
+                              select task);
+            }
+            if (viewModelList.ToDate != null)
+            {
+                tasks = (from task in _db.Tasks
+                              where (task.CreateDate <= viewModelList.ToDate)
                               select task);
             }
             if (viewModelList.Status != null)
